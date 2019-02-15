@@ -40,7 +40,7 @@ class Servico
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
-     * @Assert\NotBlank(message="Campo valor não pode ficar em branco")
+     *
      */
     private $valor;
 
@@ -110,6 +110,8 @@ class Servico
     public function __construct()
     {
         $this->categorias = new ArrayCollection();
+        $this->setStatus('A');
+        $this->setValor(30.00);
     }
 
     public function getId(): ?int
@@ -122,7 +124,7 @@ class Servico
         return $this->titulo;
     }
 
-    public function setTitulo(string $titulo): self
+    public function setTitulo($titulo): self
     {
         $this->titulo = $titulo;
 
@@ -194,7 +196,7 @@ class Servico
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus($status): self
     {
         $this->status = $status;
 
@@ -225,12 +227,12 @@ class Servico
         return $this;
     }
 
-    public function getImagem(): ?string
+    public function getImagem()
     {
         return $this->imagem;
     }
 
-    public function setImagem(?string $imagem): self
+    public function setImagem($imagem): self
     {
         $this->imagem = $imagem;
 

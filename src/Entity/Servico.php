@@ -74,7 +74,7 @@ class Servico
     private $data_cadastro;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime_immutable", nullable=true)
      * @Gedmo\Timestampable(on="update")
      */
     private $data_alteracao;

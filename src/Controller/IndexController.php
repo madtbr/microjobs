@@ -2,30 +2,52 @@
 
 namespace App\Controller;
 
-
+use App\Entity\Servico;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+use Doctrine\ORM\EntityManagerInterface;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Core\User\UserInterface;
+
 class IndexController extends AbstractController
 {
+    protected $em;
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->em = $entityManager;
+    }
+
     /**
      * @Route("/", name="index")
      * @Template("index/index.html.twig")
      */
     public function index()
     {
-        return [];
+        $micro_jobs =$this->em->getRepository(Servico::class)->findByListagem();
+        return [
+            'micro_jobs' => $micro_jobs
+        ];
     }
 
     /**
      * @Route("/painel", name="painel")
      * @Template("index/painel.html.twig")
+     * @param UserInterface $user
+     * @return array
      */
-    public function painel()
+    public function painel(UserInterface $user, Request $request)
     {
-        //return new Response("<h1>Painel</h1>");
-        return [];
+        $status = $request->get('busca_filtro');
+        $micro_jobs = $this->em->getRepository(Servico::class)
+            ->findByUsuarioAndStatus($user, $status);
+        return [
+            'micro_jobs' => $micro_jobs,
+            'status'    =>  $status
+        ];
     }
 }

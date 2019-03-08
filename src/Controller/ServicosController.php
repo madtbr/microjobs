@@ -63,4 +63,17 @@ return [
     'form'  =>  $form->createView()
 ];
     }
+
+    /**
+     * @Route("/painel/servico/excluir/{id}", name="excluir_servico")
+     * @param Servico $servico
+     */
+    public function excluir(Servico $servico)
+    {
+        $servico->setStatus("E");
+        $this->em->persist($servico);
+        $this->em->flush();
+        $this->addFlash("success", "Excluido com sucesso!");
+        return $this->redirectToRoute('painel');
+    }
 }

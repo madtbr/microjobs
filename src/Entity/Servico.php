@@ -242,7 +242,7 @@ class Servico
     /**
      * @return Collection|Categoria[]
      */
-    public function getCategorias(): Collection
+    public function getCategorias(): ?Collection
     {
         return $this->categorias;
     }

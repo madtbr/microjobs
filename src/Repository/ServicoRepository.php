@@ -18,7 +18,21 @@ class ServicoRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Servico::class);
     }
-
+    public function findByUsuarioAndStatus($user = null, $status = null)
+    {
+        $q = $this->createQueryBuilder("s");
+        if (!empty($user)) {
+            $q->andWhere('s.usuario = :usuario')
+                ->setParameter('usuario', $user);
+        }
+        if (!empty($status)) {
+            $q->andWhere('s.status = :status')
+                ->setParameter('status', $status);
+        }
+        $q->orderBy('s.data_cadastro', 'desc');
+        $query = $q->getQuery();
+        return $query->getResult();
+    }
     // /**
     //  * @return Servico[] Returns an array of Servico objects
     //  */
@@ -47,4 +61,16 @@ class ServicoRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findByListagem($busca = null, $limite = 16, $ordem = "desc"){
+        $q = $this->createQueryBuilder('s')
+            ->andWhere("s.status = 'P'");
+        if(!empty($busca)){
+            $q->andWhere("s.titulo like :busca")
+                ->setParameter("busca","%" . $busca . "%");
+        }
+        $q->setMaxResults($limite)
+          ->orderBy("s.data_cadastro", $ordem);
+        $query = $q->getQuery();
+        return $query->getResult();
+    }
 }

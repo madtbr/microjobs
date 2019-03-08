@@ -25,10 +25,13 @@ class IndexController extends AbstractController
     /**
      * @Route("/", name="index")
      * @Template("index/index.html.twig")
+     * @param Request $request
+     * @return array
      */
-    public function index()
+    public function index(Request $request)
     {
-        $micro_jobs =$this->em->getRepository(Servico::class)->findByListagem();
+        $busca = $request->get('busca');
+        $micro_jobs =$this->em->getRepository(Servico::class)->findByListagem($busca);
         return [
             'micro_jobs' => $micro_jobs
         ];
@@ -48,6 +51,17 @@ class IndexController extends AbstractController
         return [
             'micro_jobs' => $micro_jobs,
             'status'    =>  $status
+        ];
+    }
+
+    /**
+     * @param Servico $servico
+     * @Route("/micro-job/{slug}", name="visualizar_job")
+     * @Template("index/visualizar-job.html.twig")
+     */
+    public function visualizar_job(Servico $servico){
+        return[
+            'job' => $servico
         ];
     }
 }

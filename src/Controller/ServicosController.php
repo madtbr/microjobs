@@ -12,6 +12,7 @@ use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\VarDumper\VarDumper;
 
 class ServicosController extends AbstractController
 {
@@ -42,12 +43,19 @@ class ServicosController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
+
         $imagem = $servico->getImagem();
-        $nome_arquivo = md5(uniqid() ). $imagem->guessExtension();
+        $nome_arquivo = md5(uniqid()) . "." . $imagem->guessExtension();
         $imagem->move(
             $this->getParameter('caminho_img_job'),
             $nome_arquivo
         );
+//        VarDumper::dump($servico->getCategorias());
+//        VarDumper::dump($servico);
+
+//        var_dump($servico->getCategorias());
+//        var_dump($servico);
+
         $servico->setImagem($nome_arquivo);
         $servico->setUsuario($user);
         $servico->setValor(30.00);

@@ -34,10 +34,22 @@
         <div class="row mt-5">
             <div class="col-md-3">
                 <div class="list-group list-group-flush">
+                    <!-- TODO: fazer funcionar classe active -->
                     <a href="#" class="list-group-item list-group-item-action active">Meus microjobs</a>
-                    <a href="#" class="list-group-item list-group-item-action">Vendidos</a>
-                    <a href="#" class="list-group-item list-group-item-action">Rendimentos</a>
+                    {% if is_granted("ROLE_CLIENTE") %}
+                        <a href="#" class="list-group-item list-group-item-action">Compras</a>
+                    {% endif %}
+                    {#aqui nem precisava pq acima quem eh cliente tb eh freela#}
+                    {% if is_granted("ROLE_FREELA") %}
+                    <a href="#" class="list-group-item list-group-item-action">Vendas</a>
+                    {% endif %}
                     <a href="#" class="list-group-item list-group-item-action">Dados Pessoais</a>
+                    <!-- pega pela excessao : aqui se ele tah logado mesmo como ROLE_FREELA-->
+                    {% if app.user.roles.0 == "ROLE_FREELA" %}
+                    <a href="#" class="list-group-item list-group-item-action bg-liht text-danger">
+                        Torne-se um cliente
+                    </a>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-md-9">

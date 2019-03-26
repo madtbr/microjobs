@@ -67,7 +67,7 @@ class UsuariosController extends AbstractController
             $usuario->setSenha($senha_cript);
             $token = md5(uniqid());
             $usuario->setToken($token);
-            $usuario->setRoles("ROLE_ADMIN");
+            $usuario->setRoles("ROLE_FREELA");
 
             $this->em->persist($usuario);
             $this->em->flush();
@@ -101,5 +101,11 @@ class UsuariosController extends AbstractController
         $this->addFlash("success", "Cadastro foi ativado com sucesso! Informe seu e-mail e senha para acessar o sistema!");
         return $this->redirectToRoute("login");
     }
+
+    /**
+     * @Route("/painel/usuario/mudar-para-cliente", name=mudar_para_cliente)
+     * @Template("usuario/mudar-para-cliente.html.twig")
+     */
+    public function mudar_para_cliente()
 
 }
